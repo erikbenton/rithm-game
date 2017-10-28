@@ -1,0 +1,23 @@
+{
+  "name": "game",
+  "version": "1.0.0",
+  "description": "game for the rithm school js courses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erikbenton/rithm-game.git"
+  },
+  "author": "Erik Benton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erikbenton/rithm-game/issues"
+  },
+  "homepage": "https://github.com/erikbenton/rithm-game#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "normalize.css": "^7.0.0"
+  }
+}
