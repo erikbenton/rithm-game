@@ -1,0 +1,12 @@
+.player {
+	color: white;
+	font-size: 3.0rem;
+	position: relative;
+	top: 90%;
+	left: 50%;
+
+	i {
+		transform: rotate(-45deg);
+	}
+	
+}

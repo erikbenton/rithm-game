@@ -1,0 +1,8 @@
+.enemy {
+	color: white;
+	font-size: 2.0rem;
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: rotate(180deg);
+}
