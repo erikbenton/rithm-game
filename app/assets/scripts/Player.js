@@ -1,29 +1,35 @@
 class Player {
-	constructor(els) {
+	constructor(els, initLeft) {
 
-		this.events();
+		this.events(els);
+		els.style.left = initLeft;
 
 	}
 
-	events() {
-		this.move(els);
+	events(els, initLeft) {
+		this.move(els, initLeft);
 	}
 
-	move(els) {
-		var that = els;
-		els.addEventListener("keypress", function(e){
+	move(els, initLeft) {
+
+		window.addEventListener("keypress", function(e){
 			
-			// Left arrow
-			if(e.keyCode === 37){
-				var left = parseInt(that.toElement.style.left);
-				console.log(left);
-				that.toElement.style.left  = (left + 5) + "px";
+			// Get left of the player
+			var left = parseInt(els.style.left);
+
+			if(e.keyCode === 100 || e.keyCode === 37){
+				els.style.left  = (left + 3) + "px";
 			}
+
 			// Right arrow
-			if(e.keyCode === 39){
+			if(e.keyCode === 97 || e.keyCode === 39){
+				els.style.left  = (left - 3) + "px";
+			}
+
+			if(e.keyCode === 32){
 
 			}
-		})
+		});
 	}
 }
 

@@ -2,45 +2,73 @@
 
 //var player = new Player(document.querySelector(".player"));
 
+class Shot {
+	constructor(position){
+		var shot = document.createElement("i");
+		var background = document.querySelector(".background");
+		shot.className += " fa fa-angle-up shot";
+		shot.setAttribute("aria-hidden","true");
+		shot.style.position = "relative";
+		shot.style.left = position[0];
+		shot.style.top = position[1];
+		shot.style.zIndex = "10";
+		shot.style.color = "white";
+		
+		background.appendChild(shot);
+	}
+}
+
 class Player {
-	constructor(els) {
+
+	constructor(els, initLeft, initTop) {
 
 		this.events(els);
+		els.style.left = initLeft;
+		els.style.top = initTop;
+		this.isShooting = false;
+		//var shot;
 
 	}
 
-	events(els) {
-		this.move(els);
+	events(els, initLeft) {
+		this.move(els, initLeft);
 	}
 
-	move(els) {
-		var that = els;
-		console.log(els);
+	move(els, initLeft) {
+
+		var that = this;
 		window.addEventListener("keypress", function(e){
 			
-			// console.log(that);
-			 var left = parseInt(that.offsetLeft);
-			 that.style.left = left + "px";
-			// console.log(that.offsetLeft);
-			//that.style.left  = (left + 5) + "px";
-			//console.log(e);
-			// Left arrow
-			//var left = parseInt(that.style.left);
-			if(e.keyCode === 100){
-				console.log(left);
-				
-				console.log(that.style.Left);
-				that.style.left  = (left + 1) + "px";
+			// Get left of the player
+			var left = parseInt(els.style.left);
+
+			// D or -> to go left
+			if(e.keyCode === 100 || e.keyCode === 37){
+				els.style.left  = (left + 3) + "px";
 			}
-			// Right arrow
-			if(e.keyCode === 97){
+
+			// A or <-to go right
+			if(e.keyCode === 97 || e.keyCode === 39){
+				els.style.left  = (left - 3) + "px";
+			}
+
+			// Hit space to fire a shot
+			if(e.keyCode === 32 && !that.isShooting){
+				console.log(that.getPosition(els));
+				var shot = new Shot(that.getPosition(els));
+				console.log(shot);
+				that.isShooting = true;
 
 			}
-		})
+		});
+	}
+
+	getPosition(els){
+		return [els.style.left, els.style.top]
 	}
 }
 
 document.addEventListener("DOMContentLoaded", function(){
 
-	var player = new Player(document.querySelector(".player"));
+	var player = new Player(document.querySelector(".player"), "400px", "725px");
 });
