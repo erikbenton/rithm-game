@@ -15,6 +15,23 @@ class Shot {
 		shot.style.color = "white";
 		
 		background.appendChild(shot);
+		this.move(shot);
+	}
+
+	move(shot) {
+		var that = this;
+		var moveShot = setInterval(function(){
+			var top = parseInt(shot.style.top);
+			if( top > -40)
+			{
+				shot.style.top = (top - 3) + "px";
+			}
+			else
+			{
+				clearInterval(moveShot);
+				return false;
+			}
+		}, 10)
 	}
 }
 
