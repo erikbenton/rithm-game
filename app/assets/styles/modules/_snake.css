@@ -1,12 +1,8 @@
-.player {
+.snake {
 	color: white;
 	font-size: 3.0rem;
 	position: relative;
-	top: 90%;
+	top: 400px;
 	left: 400px;
-
-	i {
-		transform: rotate(-45deg);
-	}
 	
 }

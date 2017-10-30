@@ -457,26 +457,19 @@ template {
 	background-color: black;
 }
 
-.player {
+.snake {
 	color: white;
 	font-size: 3.0rem;
 	position: relative;
-	top: 90%;
+	top: 400px;
 	left: 400px;
 	
 }
 
-.player i {
-		-webkit-transform: rotate(-45deg);
-		        transform: rotate(-45deg);
-	}
-
-.enemy {
+.apple {
 	color: white;
 	font-size: 2.0rem;
 	position: absolute;
 	top: 10%;
 	left: 50%;
-	-webkit-transform: rotate(180deg);
-	        transform: rotate(180deg);
 }

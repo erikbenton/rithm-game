@@ -1,4 +1,4 @@
 @import "normalize.css";
 @import "/modules/_background.css";
-@import "/modules/_player.css";
-@import "/modules/_enemy.css";
+@import "/modules/_snake.css";
+@import "/modules/_apple.css";
