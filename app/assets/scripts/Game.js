@@ -18,8 +18,7 @@ class Game {
 
 	// Initiate the game
 	initiate() {
-		this.snake = new Snake();
-		this.element.appendChild(this.snake.element);
+		this.newSnake();
 		this.score = 0;
 		this.apple = this.newApple();
 		this.isPlaying = true;
@@ -28,6 +27,17 @@ class Game {
 
 	// Reset the game
 	reset() {
+
+		var that = this;
+
+		//this.element.removeChild(this.snake.element);
+		for(var i = 0; this.snake.numBodyPieces; i++) {
+			console.log(this.snake.numBodyPieces);
+			this.snake.element.removeChild(that.snake.bodyPieces[i].piece);
+		}
+		this.element.removeChild(this.apple.element);
+
+		this.initiate();
 
 	}
 
@@ -85,6 +95,11 @@ class Game {
 
 			}
 		});
+	}
+
+	newSnake() {
+		this.snake = new Snake();
+		this.element.appendChild(this.snake.element);
 	}
 
 	//Create new apple
@@ -151,8 +166,11 @@ class Game {
 				|| this.snake.bodyPieces[0].getTop() > 750
 				|| this.snake.bodyPieces[0].getTop() < 0)
 		{
-			clearInterval(this.moveInterval);
-			var answer = prompt("Game Over, Play again?");
+			
+			this.gameOver();
+
+			// clearInterval(this.moveInterval);
+			// var answer = prompt("Game Over, Play again?");
 		}
 	}
 
@@ -172,7 +190,9 @@ class Game {
 	gameOver() {
 		var that = this;
 		clearInterval(that.moveInterval);
-		var answer = prompt("Game Over, Play again?");
+		if(confirm("Game over, play again?")) {
+			this.reset();
+		}
 	}
 
 }

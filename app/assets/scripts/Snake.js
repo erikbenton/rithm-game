@@ -3,11 +3,6 @@ import BodyPiece from "./BodyPiece.js";
 class Snake {
 	constructor() {
 		this.element = document.querySelector(".snake");
-		
-		this.bodyPiece1 = new BodyPiece("400px", "400px", "left");
-		this.bodyPiece2 = new BodyPiece("450px", "400px", "left");
-		this.bodyPiece3 = new BodyPiece("500px", "400px", "left");
-		this.bodyPiece4 = new BodyPiece("550px", "400px", "left");
 
 		this.numBodyPieces = 0;
 		this.bodyPieces = [];
@@ -15,15 +10,16 @@ class Snake {
 		this.direction = "left";
 		this.speed = 200;
 
-		this.addBodyPiece(this.bodyPiece1);
-		this.addBodyPiece(this.bodyPiece2);
-		this.addBodyPiece(this.bodyPiece3);
-		this.addBodyPiece(this.bodyPiece4);
+		this.addBodyPiece(new BodyPiece("400px", "400px", "left"));
+		this.addBodyPiece(new BodyPiece("450px", "400px", "left"));
+		this.addBodyPiece(new BodyPiece("500px", "400px", "left"));
+		this.addBodyPiece(new BodyPiece("550px", "400px", "left"));
 
 	}
 
 
 	addBodyPiece(newBodyPiece) {
+		console.log(this);
 		this.element.appendChild(newBodyPiece.piece);
 		this.bodyPieces.push(newBodyPiece);
 		this.numBodyPieces++;
