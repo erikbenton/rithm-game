@@ -1,20 +1,20 @@
 class Apple {
 	constructor(left, top) {
-		this.apple = document.createElement("i");
-		this.apple.className += " fa fa-apple apple";
-		this.apple.setAttribute("aria-hidden", "true");
-		this.apple.style.position = "relative";
-		this.apple.style.display = "block";
-		this.apple.style.left = left + "px";
-		this.apple.style.top = top + "px";
+		this.element = document.createElement("i");
+		this.element.className += " fa fa-apple apple";
+		this.element.setAttribute("aria-hidden", "true");
+		this.element.style.position = "relative";
+		this.element.style.display = "block";
+		this.element.style.left = left + "px";
+		this.element.style.top = top + "px";
 	}
 
 	getLeft() {
-		return parseInt(this.apple.style.left);
+		return parseInt(this.element.style.left);
 	}
 
 	getTop() {
-		return parseInt(this.apple.style.top);
+		return parseInt(this.element.style.top);
 	}
 }
 

@@ -5,7 +5,7 @@ import BodyPiece from "./BodyPiece.js";
 class Game {
 	constructor() {
 
-		this.gameField = document.querySelector(".background");
+		this.element = document.querySelector(".background");
 		this.snake;
 		this.apple;
 		this.score;
@@ -19,7 +19,7 @@ class Game {
 	// Initiate the game
 	initiate() {
 		this.snake = new Snake();
-		this.gameField.appendChild(this.snake.body);
+		this.element.appendChild(this.snake.element);
 		this.score = 0;
 		this.apple = this.newApple();
 		this.isPlaying = true;
@@ -31,6 +31,7 @@ class Game {
 
 	}
 
+	// Adding the event listeners
 	events() {
 
 		var that = this;
@@ -45,6 +46,7 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("left");
 					that.checkBounds();
+					that.checkCollision();
 					that.appleEaten();
 				}, that.gameSpeed);
 
@@ -55,7 +57,8 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("right");
 					that.checkBounds();
-					that.appleEaten();
+					that.checkCollision()
+					that.appleEaten()
 				}, that.gameSpeed);
 
 			} else if(e.keyCode === 87 && that.snake.direction !== "down"){
@@ -65,6 +68,7 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("up");
 					that.checkBounds();
+					that.checkCollision();
 					that.appleEaten();
 				}, that.gameSpeed);
 
@@ -75,13 +79,11 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("down");
 					that.checkBounds();
+					that.checkCollision();
 					that.appleEaten();
 				}, that.gameSpeed);
 
 			}
-
-			
-
 		});
 	}
 
@@ -92,12 +94,18 @@ class Game {
 		var top = Math.floor(Math.random() * 16) * 50;
 
 		var newApple = new Apple(left, top);
-		this.gameField.appendChild(newApple.apple);
+		this.element.appendChild(newApple.element);
+		this.apple = newApple;
 		return newApple;
 
 	}
 
+	removeApple() {
+		this.element.removeChild(this.apple.element);
+	}
+
 	appleEaten() {
+		var that = this;
 		if(this.snake.bodyPieces[0].getTop() === this.apple.getTop()
 			&& this.snake.bodyPieces[0].getLeft() === this.apple.getLeft()) {
 
@@ -127,7 +135,11 @@ class Game {
 					break;
 			}
 
-			this.snake.addBodyPiece(newBodyPiece);
+			that.score++;
+			that.snake.addBodyPiece(newBodyPiece);
+			console.log(that.snake.numBodyPieces);
+			that.removeApple();
+			that.newApple();
 
 		}
 	}
@@ -142,6 +154,25 @@ class Game {
 			clearInterval(this.moveInterval);
 			var answer = prompt("Game Over, Play again?");
 		}
+	}
+
+	checkCollision() {
+		var that = this;
+		var left = that.snake.bodyPieces[0].getLeft();
+		var top = that.snake.bodyPieces[0].getTop();
+		console.log(that.snake.numBodyPieces);
+		for(var i = 1; i < that.snake.numBodyPieces; i++) {
+			if(left === that.snake.bodyPieces[i].getLeft()
+				&& top === that.snake.bodyPieces[i].getTop()) {
+				that.gameOver();
+			}
+		}
+	}
+
+	gameOver() {
+		var that = this;
+		clearInterval(that.moveInterval);
+		var answer = prompt("Game Over, Play again?");
 	}
 
 }

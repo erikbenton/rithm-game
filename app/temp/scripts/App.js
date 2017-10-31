@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function(){
 class Game {
 	constructor() {
 
-		this.gameField = document.querySelector(".background");
+		this.element = document.querySelector(".background");
 		this.snake;
 		this.apple;
 		this.score;
@@ -148,7 +148,7 @@ class Game {
 	// Initiate the game
 	initiate() {
 		this.snake = new __WEBPACK_IMPORTED_MODULE_0__Snake_js__["a" /* default */]();
-		this.gameField.appendChild(this.snake.body);
+		this.element.appendChild(this.snake.element);
 		this.score = 0;
 		this.apple = this.newApple();
 		this.isPlaying = true;
@@ -160,6 +160,7 @@ class Game {
 
 	}
 
+	// Adding the event listeners
 	events() {
 
 		var that = this;
@@ -174,6 +175,7 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("left");
 					that.checkBounds();
+					that.checkCollision();
 					that.appleEaten();
 				}, that.gameSpeed);
 
@@ -184,7 +186,8 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("right");
 					that.checkBounds();
-					that.appleEaten();
+					that.checkCollision()
+					that.appleEaten()
 				}, that.gameSpeed);
 
 			} else if(e.keyCode === 87 && that.snake.direction !== "down"){
@@ -194,6 +197,7 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("up");
 					that.checkBounds();
+					that.checkCollision();
 					that.appleEaten();
 				}, that.gameSpeed);
 
@@ -204,13 +208,11 @@ class Game {
 				that.moveInterval = setInterval(function(){
 					that.snake.moveBody("down");
 					that.checkBounds();
+					that.checkCollision();
 					that.appleEaten();
 				}, that.gameSpeed);
 
 			}
-
-			
-
 		});
 	}
 
@@ -221,12 +223,18 @@ class Game {
 		var top = Math.floor(Math.random() * 16) * 50;
 
 		var newApple = new __WEBPACK_IMPORTED_MODULE_1__Apple_js__["a" /* default */](left, top);
-		this.gameField.appendChild(newApple.apple);
+		this.element.appendChild(newApple.element);
+		this.apple = newApple;
 		return newApple;
 
 	}
 
+	removeApple() {
+		this.element.removeChild(this.apple.element);
+	}
+
 	appleEaten() {
+		var that = this;
 		if(this.snake.bodyPieces[0].getTop() === this.apple.getTop()
 			&& this.snake.bodyPieces[0].getLeft() === this.apple.getLeft()) {
 
@@ -256,7 +264,11 @@ class Game {
 					break;
 			}
 
-			this.snake.addBodyPiece(newBodyPiece);
+			that.score++;
+			that.snake.addBodyPiece(newBodyPiece);
+			console.log(that.snake.numBodyPieces);
+			that.removeApple();
+			that.newApple();
 
 		}
 	}
@@ -268,9 +280,30 @@ class Game {
 				|| this.snake.bodyPieces[0].getTop() > 750
 				|| this.snake.bodyPieces[0].getTop() < 0)
 		{
+			//that.gameOver.bind(that);
 			clearInterval(this.moveInterval);
 			var answer = prompt("Game Over, Play again?");
 		}
+	}
+
+	checkCollision() {
+		var that = this;
+		//console.log(that);
+		var left = that.snake.bodyPieces[0].getLeft();
+		var top = this.snake.bodyPieces[0].getTop();
+		console.log(that.snake.numBodyPieces);
+		for(var i = 1; i < that.snake.numBodyPieces; i++) {
+			if(left === that.snake.bodyPieces[i].getLeft()
+				&& top === that.snake.bodyPieces[i].getTop()) {
+				that.gameOver();
+			}
+		}
+	}
+
+	gameOver() {
+		var that = this;
+		clearInterval(that.moveInterval);
+		var answer = prompt("Game Over, Play again?");
 	}
 
 }
@@ -287,15 +320,14 @@ class Game {
 
 class Snake {
 	constructor() {
-		// var snake = document.querySelector(".snake");
-		this.body = document.querySelector(".snake");
+		this.element = document.querySelector(".snake");
 		
 		this.bodyPiece1 = new __WEBPACK_IMPORTED_MODULE_0__BodyPiece_js__["a" /* default */]("400px", "400px", "left");
 		this.bodyPiece2 = new __WEBPACK_IMPORTED_MODULE_0__BodyPiece_js__["a" /* default */]("450px", "400px", "left");
 		this.bodyPiece3 = new __WEBPACK_IMPORTED_MODULE_0__BodyPiece_js__["a" /* default */]("500px", "400px", "left");
 		this.bodyPiece4 = new __WEBPACK_IMPORTED_MODULE_0__BodyPiece_js__["a" /* default */]("550px", "400px", "left");
 
-		this.numBodyPieces = 4;
+		this.numBodyPieces = 0;
 		this.bodyPieces = [];
 		this.moveInterval;
 		this.direction = "left";
@@ -306,58 +338,11 @@ class Snake {
 		this.addBodyPiece(this.bodyPiece3);
 		this.addBodyPiece(this.bodyPiece4);
 
-		//this.events();
-		//this.moveBody(this.direction);
-
-	}
-
-	events() {
-
-		var that = this;
-
-		window.addEventListener("keydown", function(e){
-
-			//console.log(e.keyCode);
-			if(e.keyCode === 65 && that.direction !== "right") {
-				
-				clearInterval(that.moveInterval);
-
-				that.moveInterval = setInterval(function(){
-					that.moveBody("left");
-				}, that.speed);
-
-			} else if(e.keyCode === 68 && that.direction !== "left"){
-				
-				clearInterval(that.moveInterval);
-
-				that.moveInterval = setInterval(function(){
-					that.moveBody("right");
-				}, that.speed);
-
-			} else if(e.keyCode === 87 && that.direction !== "down"){
-				
-				clearInterval(that.moveInterval);
-
-				that.moveInterval = setInterval(function(){
-					that.moveBody("up");
-				}, that.speed);
-
-			} else if(e.keyCode === 83 && that.direction !== "up"){
-				
-				clearInterval(that.moveInterval);
-
-				that.moveInterval = setInterval(function(){
-					that.moveBody("down");
-				}, that.speed);
-
-			} 
-
-		});
 	}
 
 
 	addBodyPiece(newBodyPiece) {
-		this.body.appendChild(newBodyPiece.piece);
+		this.element.appendChild(newBodyPiece.piece);
 		this.bodyPieces.push(newBodyPiece);
 		this.numBodyPieces++;
 	}
@@ -390,24 +375,7 @@ class Snake {
 
 		this.bodyPieces[0].changeDirection(direction);
 
-
-		//this.checkBounds();
-
 	}
-
-	// checkBounds() {
-	// 	var that = this;
-
-	// 	if(that.bodyPieces[0].getLeft() > 750
-	// 			|| that.bodyPieces[0].getLeft() < 0
-	// 			|| that.bodyPieces[0].getTop() > 750
-	// 			|| that.bodyPieces[0].getTop() < 0)
-	// 	{
-	// 		clearInterval(that.moveInterval);
-	// 		var answer = prompt("Game Over, Play again?");
-	// 	}
-	// }
-
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Snake);
@@ -419,21 +387,21 @@ class Snake {
 "use strict";
 class Apple {
 	constructor(left, top) {
-		this.apple = document.createElement("i");
-		this.apple.className += " fa fa-apple apple";
-		this.apple.setAttribute("aria-hidden", "true");
-		this.apple.style.position = "relative";
-		this.apple.style.display = "block";
-		this.apple.style.left = left + "px";
-		this.apple.style.top = top + "px";
+		this.element = document.createElement("i");
+		this.element.className += " fa fa-apple apple";
+		this.element.setAttribute("aria-hidden", "true");
+		this.element.style.position = "relative";
+		this.element.style.display = "block";
+		this.element.style.left = left + "px";
+		this.element.style.top = top + "px";
 	}
 
 	getLeft() {
-		return parseInt(this.apple.style.left);
+		return parseInt(this.element.style.left);
 	}
 
 	getTop() {
-		return parseInt(this.apple.style.top);
+		return parseInt(this.element.style.top);
 	}
 }
 
