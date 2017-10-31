@@ -30,7 +30,6 @@ class Game {
 
 		var that = this;
 		for(var i = 0; i < this.snake.numBodyPieces; i++) {
-			console.log(that.snake.bodyPieces[i].element);
 			this.snake.element.removeChild(that.snake.bodyPieces[i].element);
 		}
 		this.element.removeChild(this.apple.element);
@@ -159,7 +158,6 @@ class Game {
 
 			that.score++;
 			that.snake.addBodyPiece(newBodyPiece);
-			console.log(that.snake.numBodyPieces);
 			that.removeApple();
 			that.newApple();
 
