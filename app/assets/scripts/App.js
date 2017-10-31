@@ -11,6 +11,8 @@ class Snake {
 		this.numBodyPieces = 0;
 		this.bodyPieces = [];
 		this.moveInterval;
+		this.direction = "left";
+		this.speed = 200;
 
 		this.addBodyPiece(this.bodyPiece1);
 		this.addBodyPiece(this.bodyPiece2);
@@ -18,7 +20,7 @@ class Snake {
 		this.addBodyPiece(this.bodyPiece4);
 
 		this.events();
-		this.moveBody("left");
+		//this.moveBody(this.direction);
 
 	}
 
@@ -27,29 +29,40 @@ class Snake {
 		var that = this;
 
 		window.addEventListener("keydown", function(e){
-			
-			if(that.moveInterval){
-				console.log("here");
-				clearInterval(that.moveInterval);
-			}
 
-			console.log(e.keyCode);
-			if(e.keyCode === 65) {
+			//console.log(e.keyCode);
+			if(e.keyCode === 65 && that.direction !== "right") {
+				
+				clearInterval(that.moveInterval);
+
 				that.moveInterval = setInterval(function(){
 					that.moveBody("left");
-				}, 200);
-			} else if(e.keyCode === 68){
+				}, that.speed);
+
+			} else if(e.keyCode === 68 && that.direction !== "left"){
+				
+				clearInterval(that.moveInterval);
+
 				that.moveInterval = setInterval(function(){
 					that.moveBody("right");
-				}, 200);
-			} else if(e.keyCode === 87){
+				}, that.speed);
+
+			} else if(e.keyCode === 87 && that.direction !== "down"){
+				
+				clearInterval(that.moveInterval);
+
 				that.moveInterval = setInterval(function(){
 					that.moveBody("up");
-				}, 200);
-			} else if(e.keyCode === 83){
+				}, that.speed);
+
+			} else if(e.keyCode === 83 && that.direction !== "up"){
+				
+				clearInterval(that.moveInterval);
+
 				that.moveInterval = setInterval(function(){
 					that.moveBody("down");
-				}, 200);
+				}, that.speed);
+
 			} 
 
 		});
@@ -68,18 +81,22 @@ class Snake {
 		var top = this.bodyPieces[0].getTop();
 
 		if(direction === "left") {
+			this.direction = "left";
 			this.bodyPieces.unshift(this.bodyPieces.pop());
 			this.bodyPieces[0].movePiece((left-50) + "px", top + "px");
 		}
 		if(direction === "right") {
+			this.direction = "right";
 			this.bodyPieces.unshift(this.bodyPieces.pop());
 			this.bodyPieces[0].movePiece((left+50) + "px", top + "px");
 		}
 		if(direction === "up") {
+			this.direction = "up";
 			this.bodyPieces.unshift(this.bodyPieces.pop());
 			this.bodyPieces[0].movePiece(left + "px", (top - 50) + "px");
 		}
 		if(direction === "down") {
+			this.direction = "down";
 			this.bodyPieces.unshift(this.bodyPieces.pop());
 			this.bodyPieces[0].movePiece(left + "px", (top + 50) + "px");
 		}
@@ -92,7 +109,10 @@ class Snake {
 	checkBounds() {
 		var that = this;
 
-		if(Math.abs(that.bodyPieces[0].getLeft()) > 400 || Math.abs(that.bodyPieces[0].getTop()) > 400)
+		if(that.bodyPieces[0].getLeft() > 350
+				|| that.bodyPieces[0].getLeft() < -400
+				|| that.bodyPieces[0].getTop() > 350
+				|| that.bodyPieces[0].getTop() < -400)
 		{
 			clearInterval(that.moveInterval);
 			var answer = prompt("Game Over, Play again?");
@@ -104,7 +124,7 @@ class Snake {
 class BodyPiece {
 	constructor(left, top) {
 		this.piece = document.createElement("i");
-		this.piece.className += " fa fa-square";
+		this.piece.className += " fa fa-square body-piece";
 		this.piece.setAttribute("aria-hidden", "true");
 		this.piece.style.position = "absolute";
 		this.piece.style.display = "block";
@@ -126,8 +146,58 @@ class BodyPiece {
 	}
 }
 
+class Game {
+	constructor() {
+
+		this.gameField = document.querySelector(".background");
+		this.score;
+		this.appleInPlay = false;
+
+	}
+
+	// Initiate the game
+	initiate() {
+		var snake = new Snake();
+		this.gameField.appendChild(snake.body);
+		this.score = 0;
+		this.newApple();
+	}
+
+	// Reset the game
+	reset() {
+
+	}
+
+	//Create new apple
+	newApple() {
+
+		var left = Math.floor(Math.random() * 16) * 50;
+		var top = Math.floor(Math.random() * 16) * 50;
+
+		var newApple = new Apple(left, top);
+		this.gameField.appendChild(newApple.apple);
+
+	}
+
+
+}
+
+class Apple {
+	constructor(left, top) {
+		this.apple = document.createElement("i");
+		this.apple.className += " fa fa-apple apple";
+		this.apple.setAttribute("aria-hidden", "true");
+		this.apple.style.position = "relative";
+		this.apple.style.display = "block";
+		this.apple.style.left = left + "px";
+		this.apple.style.top = top + "px";
+	}
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 
-	var snake = new Snake();
+	var game = new Game();
+	game.initiate();
+	// var snake = new Snake();
 
 });
