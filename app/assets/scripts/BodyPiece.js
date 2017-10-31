@@ -1,18 +1,18 @@
 class BodyPiece {
 	constructor(left, top, direction) {
-		this.piece = document.createElement("i");
-		this.piece.className += " fa fa-square body-piece";
-		this.piece.setAttribute("aria-hidden", "true");
-		this.piece.style.position = "absolute";
-		this.piece.style.display = "block";
-		this.piece.style.left = left;
-		this.piece.style.top = top;
+		this.element = document.createElement("i");
+		this.element.className += " fa fa-square body-piece";
+		this.element.setAttribute("aria-hidden", "true");
+		this.element.style.position = "absolute";
+		this.element.style.display = "block";
+		this.element.style.left = left;
+		this.element.style.top = top;
 		this.direction = direction;
 	}
 
 	movePiece(left, top) {
-		this.piece.style.left = left;
-		this.piece.style.top = top;
+		this.element.style.left = left;
+		this.element.style.top = top;
 	}
 
 	changeDirection(direction) {
@@ -20,11 +20,11 @@ class BodyPiece {
 	}
 
 	getLeft() {
-		return parseInt(this.piece.style.left);
+		return parseInt(this.element.style.left);
 	}
 
 	getTop() {
-		return parseInt(this.piece.style.top);
+		return parseInt(this.element.style.top);
 	}
 }
 

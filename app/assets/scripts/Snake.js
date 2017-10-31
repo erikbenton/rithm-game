@@ -8,7 +8,6 @@ class Snake {
 		this.bodyPieces = [];
 		this.moveInterval;
 		this.direction = "left";
-		this.speed = 200;
 
 		this.addBodyPiece(new BodyPiece("400px", "400px", "left"));
 		this.addBodyPiece(new BodyPiece("450px", "400px", "left"));
@@ -19,8 +18,7 @@ class Snake {
 
 
 	addBodyPiece(newBodyPiece) {
-		console.log(this);
-		this.element.appendChild(newBodyPiece.piece);
+		this.element.appendChild(newBodyPiece.element);
 		this.bodyPieces.push(newBodyPiece);
 		this.numBodyPieces++;
 	}

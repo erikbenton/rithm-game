@@ -9,10 +9,12 @@ class Apple {
 		this.element.style.top = top + "px";
 	}
 
+	// Gets the left for the apple
 	getLeft() {
 		return parseInt(this.element.style.left);
 	}
 
+	// Gets the top for the apple
 	getTop() {
 		return parseInt(this.element.style.top);
 	}
